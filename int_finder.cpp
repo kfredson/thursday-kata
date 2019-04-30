@@ -121,7 +121,6 @@ vector<long> divideWithSet_flipped(vector<long> array1, vector<long> array2, lon
 	return ans;
 }
 
-//WINNER!
 vector<long> divideWithUnorderedSet(vector<long> array1, vector<long> array2, long targetInt) {
 	vector<long> ans;
 
@@ -180,6 +179,7 @@ vector<long> divideWithUnorderedSet_flipped(vector<long> array1, vector<long> ar
 	return ans;
 }
 
+//WINNER!!
 vector<long> divideWithBinarySearch(vector<long> array1, vector<long> array2, long targetInt) {
 	vector<long> ans;
 
@@ -310,7 +310,7 @@ int main() {
 	
 	cout << "Running divide-with-binary-search function:\n";
 	clock_gettime(CLOCK_MONOTONIC, &start);
-    ans = divideWithUnorderedSet_flipped(v[0],v[1],v[2][0]);
+    ans = divideWithBinarySearch(v[0],v[1],v[2][0]);
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;	
@@ -322,7 +322,7 @@ int main() {
 	
 	cout << "Running divide-with-binary-search-flipped function:\n";
 	clock_gettime(CLOCK_MONOTONIC, &start);
-    ans = divideWithUnorderedSet_flipped(v[0],v[1],v[2][0]);
+    ans = divideWithBinarySearch_flipped(v[0],v[1],v[2][0]);
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;	

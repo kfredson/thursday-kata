@@ -8,21 +8,43 @@ class computeStack:
         self.parent = parent
 
     def __str__(self):
-        return "stackType: "+str(self.stackType)+" operators: "+str(self.operators)+" numbers: "+str(self.numbers)
+        return "stackType: "+str(self.stackType)+" operators: "+str(self.operators)+" numbers: "+str(self.nodes)
 
-def evaluate(cStack):
-    if cStack.stackType==None or cStack.stackType="parens":
+def evaluate(node):
+    print node
+    if type(node)==type([1]):
         mult = 1
-        for x in cStack.operators:
-            if x==[-1]:
+        for x in node:
+            if x=='-':
                 mult *= -1
-        return mult*evaluate(cStack.nodes[0])
+            elif x=='+':
+                pass
+            else:
+                mult *= x
+        return mult
+    elif node.stackType==None or node.stackType=="parens":
+        mult = 1
+        for x in node.operators:
+            if x=='-':
+                mult *= -1
+        return mult*evaluate(node.nodes[0])
     else:
-        if stackType=='pm':
-            initialVal = cStack.nodes[0]
-            
+        if node.stackType=='pm':
+            cVal = evaluate(node.nodes[0])
+            for x in enumerate(node.operators):
+                if x[1]=='-':
+                    cVal -= evaluate(node.nodes[x[0]+1])
+                else:
+                    cVal += evaluate(node.nodes[x[0]+1])
+            return cVal
         else:
-            
+            cVal = evaluate(node.nodes[0])
+            for x in enumerate(node.operators):
+                if x[1]=='/':
+                    cVal /= evaluate(node.nodes[x[0]+1])
+                else:
+                    cVal *= evaluate(node.nodes[x[0]+1])
+            return cVal
         
     
 def compute(s):
@@ -76,21 +98,26 @@ def compute(s):
             cStack.parent.nodes.append(cStack)
         elif x[0]=='-' or x[0]=='+':
             if cType=='pm' or cType==None:
+                print 'A'
                 cStack.operators.append(x[0])
                 cStack.nodes.append(lexerStack[lastIndex+1:currentIndex])
                 cStack.stackType = 'pm'
             else:
+                print 'B'
                 cStack.nodes.append(lexerStack[lastIndex+1:currentIndex])
                 cStack = cStack.parent
-        elif x[0]=='*' or x[1]=='/':
+                cStack.operators.append(x[0])
+        elif x[0]=='*' or x[0]=='/':
             if cType=='dm' or cType==None:
+                print 'C'
                 cStack.operators.append(x[0])
                 cStack.nodes.append(lexerStack[lastIndex+1:currentIndex])
                 cStack.stackType = 'dm'
             else:
+                print 'D'
                 cStack = computeStack(cStack)
                 cStack.parent.nodes.append(cStack)
-                cStack.stackType='pm'
+                cStack.stackType='dm'
                 cStack.nodes.append(lexerStack[lastIndex+1:currentIndex])
                 cStack.operators.append(x[0])
         elif x[0]==')':
@@ -100,5 +127,3 @@ def compute(s):
     if currentIndex+1 < len(lexerStack):
         origStack.nodes.append(lexerStack[currentIndex+1:])
     return origStack
-
-
